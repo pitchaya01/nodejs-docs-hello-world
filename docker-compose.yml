@@ -60,4 +60,16 @@ services:
     ports:
     - 5601:5601
     networks:
-"docker-compose.yml" 75L, 2023C
+    - elastic
+    healthcheck:
+      interval: 10s
+      retries: 20
+      test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:5601/api/status
+
+volumes:
+  esdata:
+    driver: local
+
+networks:
+  elastic:
+    driver: bridge
